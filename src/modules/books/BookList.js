@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { database } from "../../utils/firebase.utils";
 
 import { makeStyles } from "@material-ui/core/styles";
-
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
 import Book from "./Book";
+
+import { getBooks } from "../../utils/books.utils";
 
 const useStyles = makeStyles(theme => ({
   cardGrid: {
@@ -14,12 +14,6 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(8)
   }
 }));
-
-const getBooks = setter =>
-  database
-    .ref("books")
-    .once("value")
-    .then(snapshot => setter(snapshot.val()));
 
 const BookList = () => {
   const [books, setBooks] = useState(null);

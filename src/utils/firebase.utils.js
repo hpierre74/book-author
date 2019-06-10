@@ -16,3 +16,15 @@ firebase.initializeApp(config);
 export const database = firebase.database();
 
 export const storage = firebase.storage();
+
+export const getFile = ref => storage.ref(ref).getDowloadUrl();
+
+export const setFile = (ref, file) =>
+  storage
+    .ref()
+    .child(ref)
+    .put(file);
+
+export const deleteFile = ref => {
+  storage.ref(ref).delete();
+};

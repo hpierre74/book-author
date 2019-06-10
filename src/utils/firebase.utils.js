@@ -2,17 +2,16 @@ import * as firebase from "firebase/app";
 import "firebase/database";
 import "firebase/storage";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDJEUdC-7nGAonC34OJhvXqwZccEg6AAF4",
-  authDomain: "florence-jouniaux.firebaseapp.com",
-  databaseURL: "https://florence-jouniaux.firebaseio.com",
-  projectId: "florence-jouniaux",
-  storageBucket: "florence-jouniaux.appspot.com",
-  messagingSenderId: "333846286707",
-  appId: "1:333846286707:web:db26e257e25d5090"
+const config = {
+  apiKey: `${process.env.REACT_APP_FIREBASE_APIKEY}`,
+  authDomain: `${process.env.REACT_APP_FIREBASE_DOMAIN}`,
+  databaseURL: `${process.env.REACT_APP_FIREBASE_DB}`,
+  projectId: `${process.env.REACT_APP_FIREBASE_ID}`,
+  storageBucket: `${process.env.REACT_APP_FIREBASE_BUCKET}`,
+  messagingSenderId: `${process.env.REACT_APP_FIREBASE_MESSAGING}`
 };
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(config);
 
 export const database = firebase.database();
 

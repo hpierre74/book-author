@@ -1,22 +1,27 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 
-import Paper from "@material-ui/core/Paper";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+
+import Skeleton from "@material-ui/lab/Skeleton";
+
+import { BookContext } from "../modules/books/BookContext";
 
 const useStyles = makeStyles(theme => ({
-  mainFeaturedPost: {
+  mainFeaturedPost: props => ({
     position: "relative",
     backgroundColor: theme.palette.grey[800],
     color: theme.palette.common.white,
-    marginBottom: theme.spacing(4),
-    backgroundImage: "url(https://source.unsplash.com/user/erondu)",
+    backgroundImage: `url(${props.cover})`,
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center"
-  },
+  }),
   overlay: {
     position: "absolute",
     top: 0,
@@ -35,42 +40,43 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Hero = () => {
-  const classes = useStyles();
-  return (
-    <Paper className={classes.mainFeaturedPost}>
+const Hero = props => {
+  const { frontBookId, getBookById } = React.useContext(BookContext);
+  const book = getBookById(frontBookId);
+  const classes = useStyles({ cover: book && book.cover });
+
+  return book ? (
+    <Paper className={classes.mainFeaturedPost} url={book.cover}>
       {/* Increase the priority of the hero background image */}
-      {
-        <img
-          style={{ display: "none" }}
-          src="https://source.unsplash.com/user/erondu"
-          alt="background"
-        />
-      }
+      {<img style={{ display: "none" }} src={book.cover} alt="background" />}
       <div className={classes.overlay} />
       <Grid container>
         <Grid item md={4}>
-          <div className={classes.mainFeaturedPostContent}>
-            <Typography
-              component="h1"
-              variant="h3"
-              color="inherit"
-              gutterBottom
-            >
-              Argenix
-            </Typography>
-            <Typography variant="h5" color="inherit" paragraph>
-              Multiple lines of text that form the lede, informing new readers
-              quickly and efficiently about what&apos;s most interesting in this
-              post&apos;s contents.
-            </Typography>
-            <Link variant="subtitle1" href="#">
-              Continue reading…
-            </Link>
-          </div>
+          {book && (
+            <div className={classes.mainFeaturedPostContent}>
+              <Typography
+                component="h1"
+                variant="h3"
+                color="inherit"
+                gutterBottom
+              >
+                {book.title}
+              </Typography>
+              <Typography variant="h5" color="inherit" paragraph>
+                {book.description.substr(0, 66)}...
+              </Typography>
+              <Button component={Link} color="primary" to={`/books/${book.id}`}>
+                Continuer
+              </Button>
+            </div>
+          )}
         </Grid>
       </Grid>
     </Paper>
+  ) : (
+    <div style={{ maxWidth: "100vw", overflow: "hidden" }}>
+      <Skeleton variant="rect" width={2000} height={300} />
+    </div>
   );
 };
 

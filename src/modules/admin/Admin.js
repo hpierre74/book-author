@@ -9,8 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import BookTable from "../books/BookTable";
-import BookModal from "../books/BookModal";
-import { getBooks } from "../../utils/books.utils";
+import BookEditProvider from "../books/BookEditProvider";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -28,18 +27,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Admin() {
-  const [formOpen, setFormOpen] = React.useState(false);
-  const [books, setBooks] = React.useState(null);
-
-  const openModal = () => setFormOpen(true);
-  const closeModal = () => setFormOpen(false);
-
-  React.useEffect(() => {
-    if (!books) {
-      getBooks(setBooks);
-    }
-  }, [books]);
-
   const classes = useStyles();
 
   return (
@@ -62,17 +49,13 @@ export default function Admin() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container maxWidth="lg" component="main">
-        <Paper className={classes.table}>
-          <BookTable books={books}>
-            <BookModal
-              open={formOpen}
-              handleClickOpen={openModal}
-              handleClose={closeModal}
-            />
-          </BookTable>
-        </Paper>
-      </Container>
+      <BookEditProvider>
+        <Container maxWidth="lg" component="main">
+          <Paper className={classes.table}>
+            <BookTable />
+          </Paper>
+        </Container>
+      </BookEditProvider>
     </React.Fragment>
   );
 }

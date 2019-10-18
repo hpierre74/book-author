@@ -8,15 +8,23 @@ import BookList from "../books/BookList";
 import Footer from "../../components/Footer";
 import Hero from "../../components/Hero";
 import Jumbotron from "../../components/Jumbotron";
+import ToasterProvider from "../toaster/toaster.provider";
+import Toaster from "../toaster/toast.component";
+import BookProvider from "../books/BookProvider";
 
 export default function Home() {
   return (
     <React.Fragment>
       <CssBaseline />
       <main>
-        <Hero />
-        <Jumbotron />
-        <BookList />
+        <ToasterProvider>
+          <BookProvider>
+            <Hero />
+            <Jumbotron />
+            <BookList />
+            <Toaster />
+          </BookProvider>
+        </ToasterProvider>
       </main>
       <Footer />
     </React.Fragment>

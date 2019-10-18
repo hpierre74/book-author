@@ -14,6 +14,8 @@ const config = {
 
 firebase.initializeApp(config);
 
+const envPrefix = process.env.NODE_ENV === "production" ? "prod" : "staging";
+
 export const database = firebase.database();
 export const storage = firebase.storage();
 export const auth = firebase.auth();
@@ -44,14 +46,14 @@ export const storageRef = ref => storage.ref(ref);
 
 export async function getData(ref) {
   return database
-    .ref(ref)
+    .ref(`${envPrefix}/${ref}`)
     .once("value")
     .then(snapshot => snapshot.val());
 }
 
 export async function getAndSetData(ref, setter) {
   return database
-    .ref(ref)
+    .ref(`${envPrefix}/${ref}`)
     .once("value")
     .then(snapshot => {
       setter(snapshot.val());
@@ -61,7 +63,7 @@ export async function getAndSetData(ref, setter) {
 
 export function getOrderedData(ref, child) {
   return database
-    .ref(ref)
+    .ref(`${envPrefix}/${ref}`)
     .orderByChild(child)
     .once("value")
     .then(snapshot => snapshot.val());
@@ -69,7 +71,7 @@ export function getOrderedData(ref, child) {
 
 export const getOrderedDataEqual = (ref, child, value) =>
   database
-    .ref(ref)
+    .ref(`${envPrefix}/${ref}`)
     .orderByChild(child)
     .equalTo(value)
     .once("value")
@@ -77,7 +79,7 @@ export const getOrderedDataEqual = (ref, child, value) =>
 
 export const getRangedDataEqual = (ref, child, value, start, end) =>
   database
-    .ref(ref)
+    .ref(`${envPrefix}/${ref}`)
     .orderByChild(child)
     .equalTo(value)
     .startAt(start)
@@ -87,7 +89,7 @@ export const getRangedDataEqual = (ref, child, value, start, end) =>
 
 export function getRangedData(ref, child, start, end) {
   return database
-    .ref(ref)
+    .ref(`${envPrefix}/${ref}`)
     .orderByChild(child)
     .startAt(start)
     .endAt(end)
@@ -96,25 +98,27 @@ export function getRangedData(ref, child, start, end) {
 }
 
 export function getDataStream(ref, cb) {
-  return database.ref(ref).on("value", snapshot => cb(snapshot));
+  return database
+    .ref(`${envPrefix}/${ref}`)
+    .on("value", snapshot => cb(snapshot));
 }
 
 export function setData(ref, data) {
-  return database.ref(ref).update(data);
+  return database.ref(`${envPrefix}/${ref}`).update(data);
 }
 
 export const increment = (ref, number) =>
   database
-    .ref(ref)
+    .ref(`${envPrefix}/${ref}`)
     .transaction(currentCount =>
       currentCount ? parseInt(currentCount, 10) + parseInt(number, 10) : number
     )
     .catch(err => console.log(err)); // eslint-disable-line no-console
 
 export const getNewKey = ref => {
-  return database.ref(ref).push().key;
+  return database.ref(`${envPrefix}/${ref}`).push().key;
 };
 
 export const setNewKey = (ref, key) => {
-  return database.ref(`${ref}/${key}`).set({ key });
+  return database.ref(`${envPrefix}/${ref}/${key}`).set({ key });
 };

@@ -1,6 +1,18 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    ".read": "auth.uid === 'CZHxIcmnDEPOGiOBPQiyr1jOBbq1'",
+    ".write": "auth.uid === 'CZHxIcmnDEPOGiOBPQiyr1jOBbq1'",
+    "books": {
+      ".read": "true",
+      ".write": "auth.uid === 'CZHxIcmnDEPOGiOBPQiyr1jOBbq1'"
+    },
+    "hero": {
+      ".read": "true",
+      ".write": "auth.uid === 'CZHxIcmnDEPOGiOBPQiyr1jOBbq1'"
+    },
+    "author": {
+      ".read": "true",
+      ".write": "auth.uid === 'CZHxIcmnDEPOGiOBPQiyr1jOBbq1'"
+    }
   }
 }

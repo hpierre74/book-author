@@ -17,11 +17,11 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: "300px",
     height: "300px",
-    margin: "0 auto"
+    margin: "0 auto 16px"
   },
   jumboContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6)
+    padding: theme.spacing(5, 0, 6)
   },
   jumboText: {
     alignSelf: "center"

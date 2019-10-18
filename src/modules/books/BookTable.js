@@ -8,11 +8,14 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import BookModal from "./BookModal";
+import { BookContext } from "./BookContext";
+import { Switch } from "@material-ui/core";
+import { BookEditContext } from "./BookEditContext";
+
 const useStyles = makeStyles(theme => {
-  console.log(theme);
   return {
     addBook: {
       display: "flex",
@@ -31,10 +34,30 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-export default function BooksTable({ books, children }) {
+export default function BooksTable() {
   const classes = useStyles();
+  const [formOpen, setFormOpen] = React.useState(false);
+
+  const { books, frontBookId, setFrontBookId } = React.useContext(BookContext);
+  const { setCurrentBook } = React.useContext(BookEditContext);
+
+  const handleSwitchChange = id => event => {
+    setFrontBookId(id);
+  };
+
+  const openModal = () => setFormOpen(true);
+  const closeModal = () => {
+    setCurrentBook(null);
+    setFormOpen(false);
+  };
+
+  const onEdit = book => () => {
+    setCurrentBook(book);
+    openModal();
+  };
+
   return (
-    <React.Fragment>
+    <>
       {books ? (
         <Table>
           <TableHead>
@@ -48,30 +71,34 @@ export default function BooksTable({ books, children }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {books &&
-              books.map(book => (
-                <TableRow key={book.key}>
-                  <TableCell align="center">{book.title}</TableCell>
-                  <TableCell align="center">{book.published}</TableCell>
-                  <TableCell align="center">{book.price_physical}€</TableCell>
-                  <TableCell align="center">{book.price_virtual}€</TableCell>
-                  <TableCell align="center">
-                    <Checkbox disabled checked={book.showcased} />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button
-                      className={classes.button}
-                      color="primary"
-                      variant="outlined"
-                    >
-                      Edit
-                    </Button>
-                    <Button color="secondary" variant="outlined">
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+            {Object.values(books).map(book => (
+              <TableRow key={book.title}>
+                <TableCell align="center">{book.title}</TableCell>
+                <TableCell align="center">{book.published}</TableCell>
+                <TableCell align="center">{book.price_physical}€</TableCell>
+                <TableCell align="center">{book.price_virtual}€</TableCell>
+                <TableCell align="center">
+                  <Switch
+                    checked={book.id === frontBookId}
+                    onChange={handleSwitchChange(book.id)}
+                    value={book.id}
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <Button
+                    className={classes.button}
+                    color="primary"
+                    variant="outlined"
+                    onClick={onEdit(book)}
+                  >
+                    Edit
+                  </Button>
+                  <Button color="secondary" variant="outlined">
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       ) : (
@@ -79,7 +106,13 @@ export default function BooksTable({ books, children }) {
           <CircularProgress className={classes.progress} />
         </div>
       )}
-      <div className={classes.addBook}>{children}</div>
-    </React.Fragment>
+      <div className={classes.addBook}>
+        <BookModal
+          open={formOpen}
+          handleClickOpen={openModal}
+          handleClose={closeModal}
+        />
+      </div>
+    </>
   );
 }

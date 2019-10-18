@@ -1,12 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+
+import Skeleton from "@material-ui/lab/Skeleton";
+
 import { BookContext } from "../modules/books/BookContext";
-import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   mainFeaturedPost: props => ({
@@ -39,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 const Hero = props => {
   const { frontBookId, getBookById } = React.useContext(BookContext);
   const book = getBookById(frontBookId);
-  const classes = useStyles(book ? { cover: book.cover } : { cover: "" });
+  const classes = useStyles({ cover: book && book.cover });
 
   return book ? (
     <Paper className={classes.mainFeaturedPost} url={book.cover}>
@@ -69,7 +73,11 @@ const Hero = props => {
         </Grid>
       </Grid>
     </Paper>
-  ) : null;
+  ) : (
+    <div style={{ maxWidth: "100vw", overflow: "hidden" }}>
+      <Skeleton variant="rect" width={2000} height={300} />
+    </div>
+  );
 };
 
 export default Hero;

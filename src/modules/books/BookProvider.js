@@ -6,7 +6,6 @@ const BookProvider = ({ children }) => {
   const [books, setBooks] = useState(null);
   const [frontBookId, setFrontBookId] = useState(null);
 
-  console.log(books);
   useEffect(() => {
     if (books) {
       return;
@@ -22,10 +21,16 @@ const BookProvider = ({ children }) => {
   }, [frontBookId]);
   const setFrontId = id => setFrontBook(id).then(() => setFrontBookId(id));
 
-  const getLocalBookById = id =>
+  const getBookById = id =>
     books &&
     id &&
     Object.values(books).find(book => book.id.toString() === id.toString());
+
+  const getBookByTitle = title =>
+    books && title && Object.values(books).find(book => book.title === title);
+
+  const getBookBySlug = slug =>
+    books && slug && Object.values(books).find(book => book.slug === slug);
 
   return (
     <BookContext.Provider
@@ -33,7 +38,9 @@ const BookProvider = ({ children }) => {
         books,
         frontBookId,
         setFrontBookId: setFrontId,
-        getBookById: getLocalBookById
+        getBookById,
+        getBookByTitle,
+        getBookBySlug
       }}
     >
       {children}

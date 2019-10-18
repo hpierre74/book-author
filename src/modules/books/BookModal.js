@@ -21,6 +21,7 @@ const initialState = {
 
 export default function BookModal({ open, handleClickOpen, handleClose }) {
   const [state, setState] = React.useState(initialState);
+  // const [preview, setPreview] = React.useState(null);
   const { currentBook } = React.useContext(BookEditContext);
 
   const {

@@ -10,7 +10,6 @@ import Container from "@material-ui/core/Container";
 
 import BookTable from "../books/BookTable";
 import BookEditProvider from "../books/BookEditProvider";
-import BookProvider from "../books/BookProvider";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -51,13 +50,11 @@ export default function Admin() {
         </Toolbar>
       </AppBar>
       <BookEditProvider>
-        <BookProvider>
-          <Container maxWidth="lg" component="main">
-            <Paper className={classes.table}>
-              <BookTable />
-            </Paper>
-          </Container>
-        </BookProvider>
+        <Container maxWidth="lg" component="main">
+          <Paper className={classes.table}>
+            <BookTable />
+          </Paper>
+        </Container>
       </BookEditProvider>
     </React.Fragment>
   );

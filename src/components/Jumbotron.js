@@ -72,12 +72,7 @@ const Jumbotron = () => {
           <Grid container spacing={2} justify="center">
             <Grid item>
               <Button variant="contained" color="primary">
-                Main call to action
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button variant="outlined" color="primary">
-                Secondary action
+                Lire ma biographie
               </Button>
             </Grid>
           </Grid>

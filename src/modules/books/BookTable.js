@@ -14,6 +14,7 @@ import BookModal from "./BookModal";
 import { BookContext } from "./BookContext";
 import { Switch } from "@material-ui/core";
 import { BookEditContext } from "./BookEditContext";
+import { useModal } from "../modal/useModal";
 
 const useStyles = makeStyles(theme => {
   return {
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => {
 
 export default function BooksTable() {
   const classes = useStyles();
-  const [formOpen, setFormOpen] = React.useState(false);
+  const { open, openModal, closeModal } = useModal();
 
   const { books, frontBookId, setFrontBookId } = React.useContext(BookContext);
   const { setCurrentBook } = React.useContext(BookEditContext);
@@ -45,10 +46,9 @@ export default function BooksTable() {
     setFrontBookId(id);
   };
 
-  const openModal = () => setFormOpen(true);
-  const closeModal = () => {
+  const handleClose = () => {
     setCurrentBook(null);
-    setFormOpen(false);
+    closeModal();
   };
 
   const onEdit = book => () => {
@@ -108,9 +108,9 @@ export default function BooksTable() {
       )}
       <div className={classes.addBook}>
         <BookModal
-          open={formOpen}
+          open={open}
           handleClickOpen={openModal}
-          handleClose={closeModal}
+          handleClose={handleClose}
         />
       </div>
     </>

@@ -43,7 +43,7 @@ const Book = ({
   const classes = useStyles();
   const { getBookById } = useContext(BookContext);
 
-  const book = getBookById(parseInt(bookId, 10));
+  const book = getBookById(bookId);
 
   return (
     <Container className={classes.cardGrid} maxWidth="md">

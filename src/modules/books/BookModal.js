@@ -2,12 +2,10 @@ import React from "react";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+
 import { BookEditContext } from "./BookEditContext";
 import { setBook } from "../../utils/books.utils";
+import { Modal, ModalContent, ModalActions } from "../modal/Modal";
 
 const initialState = {
   author: "",
@@ -21,7 +19,7 @@ const initialState = {
   // tags: []
 };
 
-export default function FormDialog({ open, handleClickOpen, handleClose }) {
+export default function BookModal({ open, handleClickOpen, handleClose }) {
   const [state, setState] = React.useState(initialState);
   const { currentBook } = React.useContext(BookEditContext);
 
@@ -81,13 +79,13 @@ export default function FormDialog({ open, handleClickOpen, handleClose }) {
       >
         Ajouter un livre
       </Button>
-      <Dialog
+      <Modal
         open={open}
-        onClose={handleClose}
+        handleClose={handleClose}
         aria-labelledby="form-dialog-title"
+        title="Ajouter un livre"
       >
-        <DialogTitle id="form-dialog-title">Ajouter un livre</DialogTitle>
-        <DialogContent>
+        <ModalContent>
           <div>
             <img src={state.cover} width="250" alt="book cover" />
           </div>
@@ -188,16 +186,16 @@ export default function FormDialog({ open, handleClickOpen, handleClose }) {
             multiline
             fullWidth
           />
-        </DialogContent>
-        <DialogActions>
+        </ModalContent>
+        <ModalActions>
           <Button onClick={handleCancel} color="secondary">
             Annuler
           </Button>
           <Button onClick={handleSubmit} color="primary" variant="contained">
             Enregistrer
           </Button>
-        </DialogActions>
-      </Dialog>
+        </ModalActions>
+      </Modal>
     </>
   );
 }

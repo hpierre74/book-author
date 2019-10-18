@@ -11,6 +11,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Divider from "@material-ui/core/Divider";
 
 import Header from "../../components/Header";
 
@@ -32,7 +33,9 @@ const useStyles = makeStyles(theme => ({
     color: "white"
   },
   cardMedia: {
-    paddingTop: "56.25%" // 16:9
+    paddingTop: "56.25%", // 16:9
+    backgroundSize: "contain",
+    marginBottom: "1em"
   },
   cardContent: {
     flexGrow: 1,
@@ -53,7 +56,7 @@ const Book = ({
 
   return (
     <>
-      <Header />
+      <Header title="Livre" />
       <Container className={classes.cardGrid} maxWidth="md">
         {book ? (
           <Card className={classes.card}>
@@ -70,6 +73,7 @@ const Book = ({
               image={book.cover}
               title="Image title"
             />
+            <Divider variant="middle" />
             <CardContent className={classes.cardContent}>
               <Typography>{book.description}</Typography>
             </CardContent>

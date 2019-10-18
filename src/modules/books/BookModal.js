@@ -37,14 +37,16 @@ export default function BookModal({ open, handleClickOpen, handleClose }) {
   } = state;
 
   React.useEffect(() => {
-    if (currentBook && currentBook.title !== title) {
-      setState({ ...state, ...currentBook });
-    }
-
     if (state.id && !currentBook) {
       setState(initialState);
     }
-  }, [state, currentBook, title]);
+  }, [state.id, currentBook]);
+
+  React.useEffect(() => {
+    if (currentBook && !state.id && currentBook.description !== description) {
+      setState({ ...state, ...currentBook });
+    }
+  }, [currentBook, title, length, description, state]);
 
   const handleInputChange = event => {
     setState({ ...state, [event.target.name]: event.target.value });

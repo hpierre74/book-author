@@ -11,7 +11,7 @@ const handleBots = functions.https.onRequest(async (request, response) => {
 
     const books = await admin
       .database()
-      .ref(`/books`)
+      .ref(`prod/books`)
       .once("value", snap => snap.val());
 
     const html = `
@@ -32,11 +32,13 @@ const handleBots = functions.https.onRequest(async (request, response) => {
 				<section id="books">
 					<h2>Mes livres</h2>
 					<ul>
-						${Object.values(books.toJSON()).map(book => (
-							`<li>
+						${Object.values(books.toJSON()).map(
+              book =>
+                `<li>
 								<h3>${book.title}</h3>
 								<p>${book.description}</p>
-							</li>`))}
+							</li>`
+            )}
 					</ul>
 				</section>
 			</main>

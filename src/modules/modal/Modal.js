@@ -5,12 +5,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 
-export const Modal = ({ children, open, handleClose, title }) => {
+export const Modal = ({ children, open, handleClose, title, ...props }) => {
   return (
     <Dialog
       open={open}
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
+      {...props}
     >
       <DialogTitle id="form-dialog-title">{title}</DialogTitle>
       {children}

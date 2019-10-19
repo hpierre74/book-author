@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Paper from "@material-ui/core/Paper";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -29,9 +28,6 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     marginRight: theme.spacing(2)
-  },
-  table: {
-    marginTop: "2em"
   }
 }));
 
@@ -70,9 +66,7 @@ export default function Admin() {
       </AppBar>
       <BookEditProvider>
         <Container maxWidth="lg" component="main">
-          <Paper className={classes.table}>
-            <BookTable />
-          </Paper>
+          <BookTable />
         </Container>
       </BookEditProvider>
     </React.Fragment>

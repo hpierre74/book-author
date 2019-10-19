@@ -1,23 +1,38 @@
 /* eslint-disable no-script-url */
 
 import React from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
+
+import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Button from "@material-ui/core/Button";
+import Switch from "@material-ui/core/Switch";
+import IconButton from "@material-ui/core/IconButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import EditIcon from "@material-ui/icons/EditOutlined";
+import DeleteIcon from "@material-ui/icons/DeleteOutlined";
+
 import BookModal from "./BookModal";
-import { BookContext } from "./BookContext";
-import { Switch } from "@material-ui/core";
-import { BookEditContext } from "./BookEditContext";
+
 import { useModal } from "../modal/useModal";
+import { BookContext } from "./BookContext";
+import { BookEditContext } from "./BookEditContext";
 
 const useStyles = makeStyles(theme => {
   return {
+    root: {
+      width: "100%",
+      overflowX: "auto",
+      marginTop: "1em"
+    },
+    table: {
+      minWidth: 650
+    },
     addBook: {
       display: "flex",
       justifyContent: "center"
@@ -30,7 +45,8 @@ const useStyles = makeStyles(theme => {
       margin: "2.5%"
     },
     button: {
-      margin: "10px"
+      margin: "5px",
+      border: "1px solid"
     }
   };
 });
@@ -57,9 +73,9 @@ export default function BooksTable() {
   };
 
   return (
-    <>
+    <Paper className={classes.root}>
       {books ? (
-        <Table>
+        <Table className={classes.table}>
           <TableHead>
             <TableRow>
               <TableCell align="center">Titre</TableCell>
@@ -85,17 +101,21 @@ export default function BooksTable() {
                   />
                 </TableCell>
                 <TableCell align="center">
-                  <Button
+                  <IconButton
                     className={classes.button}
                     color="primary"
                     variant="outlined"
                     onClick={onEdit(book)}
                   >
-                    Edit
-                  </Button>
-                  <Button color="secondary" variant="outlined">
-                    Delete
-                  </Button>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    className={classes.button}
+                    color="secondary"
+                    variant="outlined"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
@@ -113,6 +133,6 @@ export default function BooksTable() {
           handleClose={handleClose}
         />
       </div>
-    </>
+    </Paper>
   );
 }

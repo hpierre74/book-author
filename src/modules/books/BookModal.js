@@ -2,6 +2,14 @@ import React from "react";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import IconButton from "@material-ui/core/IconButton";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import Chip from "@material-ui/core/Chip";
+
+import AddIcon from "@material-ui/icons/Add";
 
 import { BookEditContext } from "./BookEditContext";
 import { setBook } from "../../utils/books.utils";
@@ -15,12 +23,13 @@ const initialState = {
   published: "",
   price_virtual: 0,
   price_physical: 0,
-  length: 0
-  // tags: []
+  length: 0,
+  tags: []
 };
 
 export default function BookModal({ open, handleClickOpen, handleClose }) {
   const [state, setState] = React.useState(initialState);
+  const [category, setCategory] = React.useState("");
   // const [preview, setPreview] = React.useState(null);
   const { currentBook } = React.useContext(BookEditContext);
 
@@ -32,8 +41,8 @@ export default function BookModal({ open, handleClickOpen, handleClose }) {
     published,
     price_virtual,
     price_physical,
-    length
-    // tags
+    length,
+    tags
   } = state;
 
   React.useEffect(() => {
@@ -43,13 +52,31 @@ export default function BookModal({ open, handleClickOpen, handleClose }) {
   }, [state.id, currentBook]);
 
   React.useEffect(() => {
-    if (currentBook && !state.id && currentBook.description !== description) {
+    if (currentBook && !state.id && currentBook.title !== title) {
       setState({ ...state, ...currentBook });
     }
-  }, [currentBook, title, length, description, state]);
+  }, [currentBook, title, length, state]);
 
   const handleInputChange = event => {
     setState({ ...state, [event.target.name]: event.target.value });
+  };
+
+  const handleCategoryChange = event => {
+    setCategory(event.target.value);
+  };
+
+  const handleCategorySubmit = event => {
+    event.preventDefault();
+    if (category.length === 0) {
+      return;
+    }
+    setState({ ...state, tags: [...state.tags, category] });
+    setCategory("");
+  };
+
+  const handleCategoryDelete = targetTag => event => {
+    const newTags = tags.filter(tag => tag !== targetTag);
+    setState({ ...state, tags: newTags });
   };
 
   const handleFileChange = event => {
@@ -60,6 +87,7 @@ export default function BookModal({ open, handleClickOpen, handleClose }) {
   const handleSubmit = event => {
     event.preventDefault();
     if (!state.cover) {
+      alert("il n'y a pas d'image");
       return;
     }
     setBook(state);
@@ -87,6 +115,8 @@ export default function BookModal({ open, handleClickOpen, handleClose }) {
         handleClose={handleClose}
         aria-labelledby="form-dialog-title"
         title="Ajouter un livre"
+        fullWidth
+        maxWidth="lg"
       >
         <ModalContent>
           <div>
@@ -118,7 +148,7 @@ export default function BookModal({ open, handleClickOpen, handleClose }) {
             name="author"
             value={author}
             onChange={handleInputChange}
-            label="author"
+            label="Auteur"
             type="text"
             fullWidth
           />
@@ -189,6 +219,35 @@ export default function BookModal({ open, handleClickOpen, handleClose }) {
             multiline
             fullWidth
           />
+          <FormControl margin="dense" fullWidth>
+            <InputLabel htmlFor="category">Catégorie(s)</InputLabel>
+            <Input
+              id="category"
+              name="category"
+              type="text"
+              value={category}
+              onChange={handleCategoryChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="add a category"
+                    onClick={handleCategorySubmit}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <div>
+            {tags.map(tag => (
+              <Chip
+                key={tag}
+                label={tag}
+                onDelete={handleCategoryDelete(tag)}
+              />
+            ))}
+          </div>
         </ModalContent>
         <ModalActions>
           <Button onClick={handleCancel} color="secondary">

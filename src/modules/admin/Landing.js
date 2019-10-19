@@ -17,11 +17,7 @@ const Landing = () => {
     }
   }, [hasSubmit]);
 
-  return isAuth || process.env.NODE_ENV !== "production" ? (
-    <Admin />
-  ) : (
-    <Login setHasSubmit={setHasSubmit} />
-  );
+  return isAuth ? <Admin /> : <Login setHasSubmit={setHasSubmit} />;
 };
 
 export default Landing;
